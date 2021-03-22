@@ -1,0 +1,37 @@
+i686用のgcc,binutils,gdb等を構築
+
+以下のURLから、gcc,binutils,gmp,mpfr,mpcをダウンロード
+https://ftp.jaist.ac.jp/pub/GNU/
+
+sudo apt install unzip patch binutils gcc
+sudo apt install build-essential libncurses5-dev texinfo
+
+binutils-バージョン　フォルダに移動して、
+./configure --target=i686-elf --disable-nls --disable-werror --prefix=$HOME/cross/tools(任意のフォルダ)
+make
+make install
+
+gmp-バージョン　フォルダに移動して、
+./configure --prefix=$HOME/cross/tools/gmp
+make
+make check
+makeinstall
+
+mpfr-バージョン　フォルダに移動して、
+./configure --prefix=$HOME/cross/tools/mpfr --with-gmp=$HOME/cross/tools/gmp
+make
+make check
+make install
+
+mpc-バージョン　フォルダに移動して、
+./configure --prefix=$HOME/cross/tools/mpc --with-gmp=$HOME/cross/tools/gmp --with-mpfr=$HOME/cross/tools/mpfr
+make
+make check
+make install
+
+gcc-バージョン　フォルダに移動して、
+mkdir build
+cd build
+../configure --target=i686-elf --disable-nls --disable-threads --disable-shared --disable-werror --enable-languages=c --prefix=$HOME/cross/tools --with-gmp=$HOME/cross/tools/gmp --with-mpfr=$HOME/cross/tools/mpfr --with-mpc=$HOME/cross/tools/mpc --disable-libssp
+make
+make install
